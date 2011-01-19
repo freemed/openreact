@@ -6,11 +6,13 @@ public class Drug implements Serializable {
 
 	private static final long serialVersionUID = 2786066280795042789L;
 
+	private long drugId;
 	private String drugCode;
 	private CodeSet codeSet;
 	private Boolean ignoreForInteraction;
 	private String route;
 	private String drugName;
+	private ActingDuration actingDuration;
 
 	public String getDrugCode() {
 		return drugCode;
@@ -50,6 +52,22 @@ public class Drug implements Serializable {
 
 	public String getDrugName() {
 		return drugName;
+	}
+
+	public void setDrugId(long drugId) {
+		this.drugId = drugId;
+	}
+
+	public long getDrugId() {
+		return drugId;
+	}
+
+	public void setActingDuration(ActingDuration actingDuration) {
+		this.actingDuration = actingDuration;
+	}
+
+	public ActingDuration getActingDuration() {
+		return actingDuration;
 	}
 
 }
