@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,11 +27,14 @@ public class InteractionLookup {
 	/**
 	 * Query to lookup ATC codes for a drug id.
 	 */
-	public static String Q_ATC_LOOKUP = "SELECT " + " L.ATC_ID AS ATC_ID "
+	public static String Q_ATC_LOOKUP = "SELECT IFNULL(T.ID_CLASS,L.ATC_ID) AS ATC_ID "
 			+ " FROM DRUGS D "
 			+ " LEFT OUTER JOIN COMPOSITION C ON D.DID = C.DID "
+			+ " LEFT OUTER JOIN MOLS M ON C.MID = M.MID "
 			+ " LEFT OUTER JOIN LK_MOL_ATC L ON L.MID = C.MID "
-			+ " WHERE D.DID=? AND NOT ISNULL(L.ATC_ID)";
+			+ " LEFT OUTER JOIN IAM_TREE T ON T.ID_ATC=L.ATC_ID "
+			+ " WHERE D.DID=? AND NOT ISNULL(IFNULL(T.ID_CLASS,L.ATC_ID)) "
+			+ " GROUP BY M.MID;";
 
 	/**
 	 * Query to find interactions from ATC codes.
@@ -117,8 +121,7 @@ public class InteractionLookup {
 			}
 		}
 
-		@SuppressWarnings("unchecked")
-		List<DrugInteraction> atcInteractions = findInteractionsFromAtc((List<Integer>) mapAtcToDrugs
+		List<DrugInteraction> atcInteractions = findInteractionsFromAtc(mapAtcToDrugs
 				.keySet());
 
 		// Keep cache of drugs so we only look each one up once.
@@ -173,7 +176,7 @@ public class InteractionLookup {
 	 * @return
 	 */
 	public static List<DrugInteraction> findInteractionsFromAtc(
-			List<Integer> atcIds) {
+			Collection<Integer> atcIds) {
 		List<DrugInteraction> result = new ArrayList<DrugInteraction>();
 		Connection c = MasterServlet.getConnection();
 
@@ -181,7 +184,7 @@ public class InteractionLookup {
 
 		PreparedStatement q = null;
 		try {
-			q = c.prepareStatement(Q_ATC_LOOKUP);
+			q = c.prepareStatement(Q_ATC_INTERACTIONS);
 			q.setString(1, findList);
 			q.setString(2, findList);
 		} catch (SQLException e) {
@@ -233,7 +236,7 @@ public class InteractionLookup {
 	 * @param iS
 	 * @return
 	 */
-	protected static String createSetForFind(List<Integer> iS) {
+	protected static String createSetForFind(Collection<Integer> iS) {
 		StringBuilder sb = new StringBuilder();
 		for (Integer i : iS) {
 			if (sb.length() > 1) {

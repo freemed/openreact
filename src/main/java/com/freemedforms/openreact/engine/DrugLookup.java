@@ -20,10 +20,11 @@ public class DrugLookup {
 
 	public static int LOOKUP_LIMIT = 20;
 
-	public static String Q_DRUG_LOOKUP = "SELECT " + " D.NAME AS NAME "
-			+ " FROM DRUGS D " + " LEFT OUTER JOIN SOURCES S ON S.SID = D.SID "
-			+ " WHERE D.NAME LIKE ? AND S.LANG=? AND D.VALID=1 " + " LIMIT "
-			+ LOOKUP_LIMIT;
+	public static String Q_DRUG_LOOKUP = "SELECT " + " D.NAME AS NAME, "
+			+ " D.DID AS CODE " + " FROM DRUGS D "
+			+ " LEFT OUTER JOIN SOURCES S ON S.SID = D.SID "
+			+ " WHERE D.NAME LIKE ? AND S.LANG=? AND D.VALID=1 "
+			+ " GROUP BY D.NAME " + " LIMIT " + LOOKUP_LIMIT;
 
 	public static String Q_DRUG_BY_ID = "SELECT " + " D.* " + " FROM DRUGS D "
 			+ " WHERE D.DID = ? AND " + " LIMIT " + LOOKUP_LIMIT;
@@ -35,8 +36,8 @@ public class DrugLookup {
 		PreparedStatement q = null;
 		try {
 			q = c.prepareStatement(Q_DRUG_LOOKUP);
-			q.setString(1, name);
-			q.setString(2, codeset.getValue());
+			q.setString(1, name + "%");
+			q.setString(2, codeset.getLang());
 		} catch (SQLException e) {
 			log.error(e);
 			DbUtil.closeSafely(q);
