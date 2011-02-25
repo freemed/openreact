@@ -11,7 +11,7 @@ public class DrugInteraction implements Serializable {
 	private Drug drug2;
 	private String atc1;
 	private String atc2;
-	private String level;
+	private InteractionType level;
 	private String webLink;
 
 	public void setId(long id) {
@@ -54,11 +54,11 @@ public class DrugInteraction implements Serializable {
 		return atc2;
 	}
 
-	public void setLevel(String level) {
+	public void setLevel(InteractionType level) {
 		this.level = level;
 	}
 
-	public String getLevel() {
+	public InteractionType getLevel() {
 		return level;
 	}
 

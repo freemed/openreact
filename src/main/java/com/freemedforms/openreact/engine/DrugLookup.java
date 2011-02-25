@@ -20,11 +20,13 @@ public class DrugLookup {
 
 	public static int LOOKUP_LIMIT = 20;
 
-	public static String Q_DRUG_LOOKUP = "SELECT " + " DRUGS.NAME AS NAME "
-			+ " FROM DRUGS "
-			+ " LEFT OUTER JOIN SOURCES ON SOURCES.SID = DRUGS.SID "
-			+ " WHERE NAME LIKE ? AND LANG=? AND VALID=1 " + " LIMIT "
+	public static String Q_DRUG_LOOKUP = "SELECT " + " D.NAME AS NAME "
+			+ " FROM DRUGS D " + " LEFT OUTER JOIN SOURCES S ON S.SID = D.SID "
+			+ " WHERE D.NAME LIKE ? AND S.LANG=? AND D.VALID=1 " + " LIMIT "
 			+ LOOKUP_LIMIT;
+
+	public static String Q_DRUG_BY_ID = "SELECT " + " D.* " + " FROM DRUGS D "
+			+ " WHERE D.DID = ? AND " + " LIMIT " + LOOKUP_LIMIT;
 
 	public static List<Drug> findDrug(CodeSet codeset, String name) {
 		List<Drug> result = new ArrayList<Drug>();
@@ -60,6 +62,48 @@ public class DrugLookup {
 				drug.setCodeSet(codeset);
 				result.add(drug);
 			}
+		} catch (SQLException e) {
+			log.error(e);
+			DbUtil.closeSafely(rs);
+			DbUtil.closeSafely(q);
+			DbUtil.closeSafely(c);
+			return result;
+		}
+
+		DbUtil.closeSafely(q);
+		DbUtil.closeSafely(c);
+		return result;
+	}
+
+	public static Drug getDrugById(Long drugId) {
+		Drug result = new Drug();
+		Connection c = MasterServlet.getConnection();
+
+		PreparedStatement q = null;
+		try {
+			q = c.prepareStatement(Q_DRUG_BY_ID);
+			q.setLong(1, drugId);
+		} catch (SQLException e) {
+			log.error(e);
+			DbUtil.closeSafely(q);
+			DbUtil.closeSafely(c);
+			return result;
+		}
+
+		ResultSet rs = null;
+		try {
+			rs = q.executeQuery();
+		} catch (SQLException e) {
+			log.error(e);
+			DbUtil.closeSafely(rs);
+			DbUtil.closeSafely(q);
+			DbUtil.closeSafely(c);
+			return result;
+		}
+		try {
+			rs.next();
+			result.setDrugName(rs.getString("NAME"));
+			result.setDrugCode(rs.getString("CODE"));
 		} catch (SQLException e) {
 			log.error(e);
 			DbUtil.closeSafely(rs);

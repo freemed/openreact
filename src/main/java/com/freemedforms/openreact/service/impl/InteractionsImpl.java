@@ -1,5 +1,8 @@
 package com.freemedforms.openreact.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jws.WebService;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -8,6 +11,7 @@ import javax.ws.rs.Produces;
 import org.apache.cxf.annotations.GZIP;
 
 import com.freemedforms.openreact.engine.DrugLookup;
+import com.freemedforms.openreact.engine.InteractionLookup;
 import com.freemedforms.openreact.service.Interactions;
 import com.freemedforms.openreact.types.CodeSet;
 import com.freemedforms.openreact.types.Drug;
@@ -33,8 +37,13 @@ public class InteractionsImpl implements Interactions {
 	@Produces("application/json")
 	public DrugInteraction[] findInteractions(CodeSet requestedCodeset,
 			Drug[] drugs) {
-		// TODO Auto-generated method stub
-		return null;
+		// Extract all ids from drugs
+		List<Long> drugIds = new ArrayList<Long>();
+		for (Drug drug : drugs) {
+			drugIds.add(drug.getDrugId());
+		}
+		return InteractionLookup.findInteractionsFromDrugs(drugIds).toArray(
+				new DrugInteraction[0]);
 	}
 
 	@Override
