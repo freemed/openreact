@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import com.freemedforms.openreact.db.DbUtil;
 import com.freemedforms.openreact.servlet.MasterServlet;
+import com.freemedforms.openreact.types.CodeSet;
 import com.freemedforms.openreact.types.Drug;
 import com.freemedforms.openreact.types.DrugInteraction;
 import com.freemedforms.openreact.types.InteractionType;
@@ -25,41 +26,52 @@ public class InteractionLookup {
 	public static int LOOKUP_LIMIT = 20;
 
 	/**
-	 * Query to lookup ATC codes for a drug id.
+	 * Query to lookup ATC classes for a drug id.
 	 */
-	public static String Q_ATC_LOOKUP = "SELECT IFNULL(T.ID_CLASS,L.ATC_ID) AS ATC_ID "
-			+ " FROM DRUGS D "
-			+ " LEFT OUTER JOIN COMPOSITION C ON D.DID = C.DID "
-			+ " LEFT OUTER JOIN MOLS M ON C.MID = M.MID "
-			+ " LEFT OUTER JOIN LK_MOL_ATC L ON L.MID = C.MID "
-			+ " LEFT OUTER JOIN IAM_TREE T ON T.ID_ATC=L.ATC_ID "
-			+ " WHERE D.DID=? AND NOT ISNULL(IFNULL(T.ID_CLASS,L.ATC_ID)) "
-			+ " GROUP BY M.MID;";
+	public static String Q_ATC_LOOKUP = "SELECT "
+			+ " IAM_TREE.ID_CLASS AS ID_CLASS, LABELS.LABEL AS LABEL FROM IAM_TREE "
+			+ " JOIN ATC_LABELS ON ATC_LABELS.ATC_ID=IAM_TREE.ID_CLASS "
+			+ " JOIN LABELS_LINK ON LABELS_LINK.MASTER_LID=ATC_LABELS.MASTER_LID "
+			+ " JOIN LABELS ON LABELS_LINK.LID=LABELS.LID "
+			+ " WHERE (IAM_TREE.ID_ATC IN ( "
+			+ " SELECT LK_MOL_ATC.ATC_ID FROM DRUGS "
+			+ " JOIN COMPOSITION ON DRUGS.DID=COMPOSITION.DID "
+			+ " JOIN MOLS ON COMPOSITION.MID=MOLS.MID "
+			+ " JOIN LK_MOL_ATC ON MOLS.MID=LK_MOL_ATC.MID "
+			+ " WHERE DRUGS.DID=? ) ) AND LABELS.LANG=?;";
 
 	/**
 	 * Query to find interactions from ATC codes.
 	 */
-	public static String Q_ATC_INTERACTIONS = "SELECT " + " I.IAID AS ID, "
+	public static String Q_ATC_INTERACTIONS = "SELECT "
+			+ " I.IAID AS ID, "
 			+ " I.ATC_ID1 AS ATC_ID1, I.ATC_ID2 AS ATC_ID2, "
-			+ " K.TYPE AS TYPE, K.WWW AS WWW " + " FROM INTERACTIONS I "
-			+ " LEFT OUTER JOIN IA_IAK L ON L.IAID = I.IAID "
-			+ " LEFT OUTER JOIN IAKNOWLEDGE K ON K.IAKID = L.IAKID "
+			+ " K.TYPE AS TYPE, K.WWW AS WWW, L.LABEL AS RISK "
+			+ " FROM INTERACTIONS I "
+			+ " LEFT OUTER JOIN IA_IAK IK ON IK.IAID = I.IAID "
+			+ " LEFT OUTER JOIN IAKNOWLEDGE K ON K.IAKID = IK.IAKID "
+			+ " LEFT OUTER JOIN LABELS_LINK LL ON LL.MASTER_LID=K.RISK_MASTER_LID "
+			+ " LEFT OUTER JOIN LABELS L ON LL.LID=L.LID "
 			+ " WHERE ( FIND_IN_SET(ATC_ID1, ?) AND FIND_IN_SET(ATC_ID2, ?) );";
 
 	/**
-	 * Get ATC codes for a drug code.
+	 * Get ATC classes for a drug code.
 	 * 
 	 * @param drugId
 	 * @return
 	 */
-	public static List<Integer> findAtcFromDrug(Long drugId) {
+	public static List<Integer> findAtcFromDrug(CodeSet codeset, Long drugId) {
+		log.info("findAtcFromDrug(" + codeset + ", " + drugId + ")");
 		List<Integer> result = new ArrayList<Integer>();
 		Connection c = MasterServlet.getConnection();
+
+		log.info(Q_ATC_LOOKUP);
 
 		PreparedStatement q = null;
 		try {
 			q = c.prepareStatement(Q_ATC_LOOKUP);
 			q.setLong(1, drugId);
+			q.setString(2, codeset.getLang().substring(0, 2));
 		} catch (SQLException e) {
 			log.error(e);
 			DbUtil.closeSafely(q);
@@ -77,9 +89,12 @@ public class InteractionLookup {
 			DbUtil.closeSafely(c);
 			return result;
 		}
+
+		log.info("Attempt to extract data from set");
 		try {
 			while (rs.next()) {
-				result.add(rs.getInt("ATC_ID"));
+				log.info("ATC_ID = " + rs.getInt("ID_CLASS"));
+				result.add(rs.getInt("ID_CLASS"));
 			}
 		} catch (SQLException e) {
 			log.error(e);
@@ -89,6 +104,7 @@ public class InteractionLookup {
 			return result;
 		}
 
+		DbUtil.closeSafely(rs);
 		DbUtil.closeSafely(q);
 		DbUtil.closeSafely(c);
 		return result;
@@ -97,18 +113,26 @@ public class InteractionLookup {
 	/**
 	 * Given a list of DRUG ids, resolve interactions.
 	 * 
+	 * @param codeset
 	 * @param drugIds
 	 * @return
 	 */
 	public static List<DrugInteraction> findInteractionsFromDrugs(
-			List<Long> drugIds) {
+			CodeSet codeset, List<Long> drugIds) {
+		log.info("findInteractionsFromDrugs(" + codeset + ", "
+				+ (drugIds != null ? drugIds.size() : "0") + ")");
 		List<DrugInteraction> result = new ArrayList<DrugInteraction>();
 
 		// Create a mapping of all drug ids -> ATC codes
 		Map<Integer, List<Long>> mapAtcToDrugs = new HashMap<Integer, List<Long>>();
 		for (Long drugId : drugIds) {
-			List<Integer> atcCodesForDrug = findAtcFromDrug(drugId);
+			log.info("Processing drug id " + drugId);
+			List<Integer> atcCodesForDrug = findAtcFromDrug(codeset, drugId);
+			log.info("Found " + atcCodesForDrug.size()
+					+ " ATC classes for drugId " + drugId);
 			for (Integer atcCodeForDrug : atcCodesForDrug) {
+				log.info("Add ATC code " + atcCodeForDrug + " for drugId "
+						+ drugId);
 				if (mapAtcToDrugs.containsKey(atcCodeForDrug)) {
 					// If it contains an array already, append
 					mapAtcToDrugs.get(atcCodeForDrug).add(drugId);
@@ -127,7 +151,11 @@ public class InteractionLookup {
 		// Keep cache of drugs so we only look each one up once.
 		Map<Long, Drug> drugCache = new HashMap<Long, Drug>();
 
+		List<String> storedInteractions = new ArrayList<String>();
+
 		for (DrugInteraction atcInteraction : atcInteractions) {
+			log.info("Interaction " + atcInteraction);
+
 			// Get the actual ATC codes which were found in the interaction
 			Integer atc1 = Integer.parseInt(atcInteraction.getAtc1());
 			Integer atc2 = Integer.parseInt(atcInteraction.getAtc2());
@@ -139,12 +167,17 @@ public class InteractionLookup {
 			// More or less recurse through and populate
 			for (Long atc1loop : atc1list) {
 				if (!drugCache.containsKey(atc1loop)) {
-					drugCache.put(atc1loop, DrugLookup.getDrugById(atc1loop));
+					log.info("Cache drugId " + atc1loop + " in ATC1 loop");
+					Drug d = DrugLookup.getDrugById(atc1loop);
+					d.setCodeSet(codeset);
+					drugCache.put(atc1loop, d);
 				}
 				for (Long atc2loop : atc2list) {
 					if (!drugCache.containsKey(atc2loop)) {
-						drugCache.put(atc2loop, DrugLookup
-								.getDrugById(atc2loop));
+						log.info("Cache drugId " + atc2loop + " in ATC2 loop");
+						Drug d = DrugLookup.getDrugById(atc2loop);
+						d.setCodeSet(codeset);
+						drugCache.put(atc2loop, d);
 					}
 
 					DrugInteraction ni = new DrugInteraction();
@@ -160,8 +193,14 @@ public class InteractionLookup {
 					ni.setDrug1(drugCache.get(atc1loop));
 					ni.setDrug2(drugCache.get(atc2loop));
 
-					// ... and push it into the result list
-					result.add(ni);
+					// ... and push it into the result list if unique
+					String key = atcInteraction.getAtc1() + "-"
+							+ atcInteraction.getAtc2();
+					if (!storedInteractions.contains(key)) {
+						log.info("Adding interaction for " + key);
+						storedInteractions.add(key);
+						result.add(ni);
+					}
 				}
 			}
 		}
@@ -211,6 +250,7 @@ public class InteractionLookup {
 				di.setAtc1(rs.getString("ATC_ID1"));
 				di.setAtc2(rs.getString("ATC_ID2"));
 				di.setWebLink(rs.getString("WWW"));
+				di.setRisk(rs.getString("RISK"));
 				di.setLevel(InteractionType.valueOf(rs.getString("TYPE")));
 				// NOTE: Do not set drug1 and drug2, those would need to be
 				// resolved from the matching ATC codes, which should not be
@@ -225,6 +265,7 @@ public class InteractionLookup {
 			return result;
 		}
 
+		DbUtil.closeSafely(rs);
 		DbUtil.closeSafely(q);
 		DbUtil.closeSafely(c);
 		return result;

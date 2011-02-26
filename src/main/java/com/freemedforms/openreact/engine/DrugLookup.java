@@ -26,8 +26,9 @@ public class DrugLookup {
 			+ " WHERE D.NAME LIKE ? AND S.LANG=? AND D.VALID=1 "
 			+ " GROUP BY D.NAME " + " LIMIT " + LOOKUP_LIMIT;
 
-	public static String Q_DRUG_BY_ID = "SELECT " + " D.* " + " FROM DRUGS D "
-			+ " WHERE D.DID = ? AND " + " LIMIT " + LOOKUP_LIMIT;
+	public static String Q_DRUG_BY_ID = "SELECT "
+			+ " D.NAME AS NAME, D.DID AS CODE " + " FROM DRUGS D "
+			+ " WHERE D.DID = ?";
 
 	public static List<Drug> findDrug(CodeSet codeset, String name) {
 		List<Drug> result = new ArrayList<Drug>();
@@ -71,6 +72,7 @@ public class DrugLookup {
 			return result;
 		}
 
+		DbUtil.closeSafely(rs);
 		DbUtil.closeSafely(q);
 		DbUtil.closeSafely(c);
 		return result;
@@ -103,6 +105,7 @@ public class DrugLookup {
 		}
 		try {
 			rs.next();
+			result.setDrugId(drugId);
 			result.setDrugName(rs.getString("NAME"));
 			result.setDrugCode(rs.getString("CODE"));
 		} catch (SQLException e) {
@@ -113,6 +116,7 @@ public class DrugLookup {
 			return result;
 		}
 
+		DbUtil.closeSafely(rs);
 		DbUtil.closeSafely(q);
 		DbUtil.closeSafely(c);
 		return result;

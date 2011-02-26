@@ -9,10 +9,10 @@ public class Drug implements Serializable {
 	private long drugId;
 	private String drugCode;
 	private CodeSet codeSet;
-	private Boolean ignoreForInteraction;
+	private Boolean ignoreForInteraction = Boolean.FALSE;
 	private String route;
 	private String drugName;
-	private ActingDuration actingDuration;
+	private ActingDuration actingDuration = ActingDuration.UNSPECIFIED_DURATION;
 
 	public String getDrugCode() {
 		return drugCode;

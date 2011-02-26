@@ -13,6 +13,7 @@ public class DrugInteraction implements Serializable {
 	private String atc2;
 	private InteractionType level;
 	private String webLink;
+	private String risk;
 
 	public void setId(long id) {
 		this.id = id;
@@ -68,6 +69,23 @@ public class DrugInteraction implements Serializable {
 
 	public String getWebLink() {
 		return webLink;
+	}
+
+	public void setRisk(String risk) {
+		this.risk = risk;
+	}
+
+	public String getRisk() {
+		return risk;
+	}
+
+	@Override
+	public String toString() {
+		return new StringBuilder().append("DrugInteraction{").append("id=")
+				.append(id).append(",drug1=").append(drug1).append(",drug2=")
+				.append(drug2).append(",atc1=").append(atc1).append(",atc2=")
+				.append(atc2).append(",level=").append(level).append(
+						",webLink=").append(webLink).append("}").toString();
 	}
 
 }

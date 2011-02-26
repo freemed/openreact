@@ -2,8 +2,7 @@ package com.freemedforms.openreact.types;
 
 public enum InteractionType {
 
-	INFORMATION("I"), USE_CAUTION("P"), TAKE_INTO_ACCOUNT("T"), DEPRECATED("D"), COUNTERINDICATED(
-			"C");
+	I("I"), P("P"), T("T"), D("D"), C("C"), Y("Y");
 
 	private final String value;
 

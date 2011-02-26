@@ -9,6 +9,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.apache.cxf.annotations.GZIP;
+import org.apache.log4j.Logger;
 
 import com.freemedforms.openreact.engine.DrugLookup;
 import com.freemedforms.openreact.engine.InteractionLookup;
@@ -20,6 +21,8 @@ import com.freemedforms.openreact.types.DrugInteraction;
 @GZIP
 @WebService(endpointInterface = "com.freemedforms.openreact.service.Interactions")
 public class InteractionsImpl implements Interactions {
+
+	private static final Logger log = Logger.getLogger(InteractionsImpl.class);
 
 	private static long PROTOCOL_VERSION = 1L;
 
@@ -37,13 +40,16 @@ public class InteractionsImpl implements Interactions {
 	@Produces("application/json")
 	public DrugInteraction[] findInteractions(CodeSet requestedCodeset,
 			Drug[] drugs) {
+		log.info("findInteractions(" + requestedCodeset + ", "
+				+ (drugs != null ? drugs.length : 0) + ")");
 		// Extract all ids from drugs
 		List<Long> drugIds = new ArrayList<Long>();
 		for (Drug drug : drugs) {
+			log.info("Adding drug id " + drug.getDrugId() + " to stack");
 			drugIds.add(drug.getDrugId());
 		}
-		return InteractionLookup.findInteractionsFromDrugs(drugIds).toArray(
-				new DrugInteraction[0]);
+		return InteractionLookup.findInteractionsFromDrugs(requestedCodeset,
+				drugIds).toArray(new DrugInteraction[0]);
 	}
 
 	@Override
@@ -51,6 +57,7 @@ public class InteractionsImpl implements Interactions {
 	@Path("find/{codeset}/{name}")
 	@Produces("application/json")
 	public Drug[] findDrug(CodeSet codeset, String name) {
+		log.info("findDrug(" + codeset + ", " + name + ")");
 		return DrugLookup.findDrug(codeset, name).toArray(new Drug[0]);
 	}
 
