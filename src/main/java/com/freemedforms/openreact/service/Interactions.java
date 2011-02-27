@@ -17,6 +17,10 @@ public interface Interactions {
 			@PathParam("codeset") @WebParam(name = "codeset") CodeSet requestedCodeset,
 			@PathParam("drugs") @WebParam(name = "drugs") Drug[] drugs);
 
+	public DrugInteraction[] findInteractionsByIds(
+			@PathParam("codeset") @WebParam(name = "codeset") CodeSet requestedCodeset,
+			@PathParam("drugs") @WebParam(name = "drugs") Long[] drugs);
+	
 	public Drug[] findDrug(
 			@PathParam("codeset") @WebParam(name = "codeset") CodeSet codeset,
 			@PathParam("name") @WebParam(name = "name") String name);

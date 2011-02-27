@@ -160,6 +160,11 @@ public class InteractionLookup {
 			Integer atc1 = Integer.parseInt(atcInteraction.getAtc1());
 			Integer atc2 = Integer.parseInt(atcInteraction.getAtc2());
 
+			if (atc1 == atc2) {
+				log.info("Skipping self-referential interaction for " + atc1);
+				continue;
+			}
+
 			// Resolve these to the list of possible drugs
 			List<Long> atc1list = mapAtcToDrugs.get(atc1);
 			List<Long> atc2list = mapAtcToDrugs.get(atc2);
@@ -178,6 +183,14 @@ public class InteractionLookup {
 						Drug d = DrugLookup.getDrugById(atc2loop);
 						d.setCodeSet(codeset);
 						drugCache.put(atc2loop, d);
+					}
+
+					// Figure out which ones to skip
+					if (atc1loop == atc2loop) {
+						log
+								.info("Skipping self-referential interaction for drugId "
+										+ atc1loop);
+						continue;
 					}
 
 					DrugInteraction ni = new DrugInteraction();
