@@ -29,7 +29,8 @@ package com.freemedforms.openreact.types;
 
 public enum InteractionType {
 
-	I("I"), P("P"), T("T"), D("D"), C("C"), Y("Y");
+	T("T"), P("P"), C("C"), D("D"), TD("TD"), PC("PC"), PD("PD"), TC("TC"), TDC(
+			"TDC"), I("I"), DC("DC"), PDC("PDC"), I450("450"), Y("Y");
 
 	private final String value;
 
@@ -41,6 +42,7 @@ public enum InteractionType {
 		return this.value;
 	}
 
+	@Override
 	public String toString() {
 		return this.value;
 	}
