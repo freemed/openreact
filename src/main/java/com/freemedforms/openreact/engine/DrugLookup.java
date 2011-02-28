@@ -37,7 +37,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.freemedforms.openreact.db.DbUtil;
-import com.freemedforms.openreact.servlet.MasterServlet;
 import com.freemedforms.openreact.types.CodeSet;
 import com.freemedforms.openreact.types.Drug;
 
@@ -59,7 +58,7 @@ public class DrugLookup {
 
 	public static List<Drug> findDrug(CodeSet codeset, String name) {
 		List<Drug> result = new ArrayList<Drug>();
-		Connection c = MasterServlet.getConnection();
+		Connection c = Configuration.getConnection();
 
 		PreparedStatement q = null;
 		try {
@@ -107,7 +106,7 @@ public class DrugLookup {
 
 	public static Drug getDrugById(Long drugId) {
 		Drug result = new Drug();
-		Connection c = MasterServlet.getConnection();
+		Connection c = Configuration.getConnection();
 
 		PreparedStatement q = null;
 		try {

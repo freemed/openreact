@@ -40,7 +40,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.freemedforms.openreact.db.DbUtil;
-import com.freemedforms.openreact.servlet.MasterServlet;
 import com.freemedforms.openreact.types.CodeSet;
 import com.freemedforms.openreact.types.Drug;
 import com.freemedforms.openreact.types.DrugInteraction;
@@ -90,7 +89,7 @@ public class InteractionLookup {
 	public static List<Integer> findAtcFromDrug(CodeSet codeset, Long drugId) {
 		log.info("findAtcFromDrug(" + codeset + ", " + drugId + ")");
 		List<Integer> result = new ArrayList<Integer>();
-		Connection c = MasterServlet.getConnection();
+		Connection c = Configuration.getConnection();
 
 		log.info(Q_ATC_LOOKUP);
 
@@ -257,7 +256,7 @@ public class InteractionLookup {
 	public static List<DrugInteraction> findInteractionsFromAtc(
 			Collection<Integer> atcIds) {
 		List<DrugInteraction> result = new ArrayList<DrugInteraction>();
-		Connection c = MasterServlet.getConnection();
+		Connection c = Configuration.getConnection();
 
 		String findList = createSetForFind(atcIds);
 

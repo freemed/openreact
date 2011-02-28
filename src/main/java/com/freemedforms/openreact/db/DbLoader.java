@@ -40,6 +40,7 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
+import com.freemedforms.openreact.engine.Configuration;
 import com.freemedforms.openreact.servlet.MasterServlet;
 
 public class DbLoader {
@@ -148,7 +149,7 @@ public class DbLoader {
 	 */
 	public void loadTable(String database, String table, String data)
 			throws Exception {
-		Connection c = MasterServlet.getConnection();
+		Connection c = Configuration.getConnection();
 
 		String finalTableName = (database.equals("iam") ? "" : database + "_")
 				+ table;
@@ -297,7 +298,7 @@ public class DbLoader {
 	 */
 	protected void truncateTable(String tableName) throws NullPointerException,
 			SQLException {
-		Connection c = MasterServlet.getConnection();
+		Connection c = Configuration.getConnection();
 		PreparedStatement truncate = c
 				.prepareStatement("TRUNCATE " + tableName);
 		ResultSet rs = safelyExecuteStatement(c, truncate);
@@ -314,7 +315,7 @@ public class DbLoader {
 	 * @throws SQLException
 	 */
 	public String getApplicationConfig(String key) throws SQLException {
-		Connection c = MasterServlet.getConnection();
+		Connection c = Configuration.getConnection();
 		PreparedStatement q = c
 				.prepareStatement("SELECT fValue FROM tApplicationState WHERE fKey = ?");
 		q.setString(1, key);
@@ -336,7 +337,7 @@ public class DbLoader {
 	 */
 	public void setApplicationConfig(String key, String value)
 			throws SQLException {
-		Connection c = MasterServlet.getConnection();
+		Connection c = Configuration.getConnection();
 
 		// Remove old entry, if it exists;
 		PreparedStatement r = c

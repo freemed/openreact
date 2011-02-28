@@ -41,7 +41,7 @@ import java.util.Scanner;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 
-import com.freemedforms.openreact.servlet.MasterServlet;
+import com.freemedforms.openreact.engine.Configuration;
 
 public class DbSchema {
 
@@ -52,10 +52,10 @@ public class DbSchema {
 	 * 
 	 * @param patchFilename
 	 * @return Success.
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public static boolean applyPatch(String patchFilename) throws SQLException {
-		Connection c = MasterServlet.getConnection();
+		Connection c = Configuration.getConnection();
 
 		String patch = null;
 
@@ -74,8 +74,8 @@ public class DbSchema {
 		try {
 			log.debug("Using patch length = " + patch.length());
 			cStmt.execute(patch);
-			//cStmt = c.prepareStatement(patch);
-			//cStmt.execute();
+			// cStmt = c.prepareStatement(patch);
+			// cStmt.execute();
 			log.info("Patch succeeded");
 			status = true;
 		} catch (NullPointerException npe) {
@@ -97,7 +97,7 @@ public class DbSchema {
 	 * @return Success.
 	 */
 	public static boolean isPatchApplied(String patchName) {
-		Connection c = MasterServlet.getConnection();
+		Connection c = Configuration.getConnection();
 
 		int found = 0;
 
@@ -132,7 +132,7 @@ public class DbSchema {
 	 * @return Success.
 	 */
 	public static boolean recordPatch(String patchName) {
-		Connection c = MasterServlet.getConnection();
+		Connection c = Configuration.getConnection();
 
 		boolean status = false;
 		PreparedStatement cStmt = null;
