@@ -97,4 +97,15 @@ public class Drug implements Serializable {
 		return actingDuration;
 	}
 
+	@Override
+	public String toString() {
+		return new StringBuilder().append("Drug{").append(",drugId=").append(
+				drugId).append(",drugCode=").append(drugCode).append(
+				",codeSet=").append(codeSet).append(",ignoreForInteraction=")
+				.append(ignoreForInteraction).append(",route=").append(route)
+				.append(",drugName=").append(drugName).append(
+						",actingDuration=").append(actingDuration).append("}")
+				.toString();
+	}
+
 }
