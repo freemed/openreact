@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>OpenReact Mobile</title>
+    <link rel="stylesheet" href="css/style.css" type='text/css' media='all' />
+    <link rel="stylesheet" href="css/iphone.css" type='text/css' media='all' />
+    <link rel="stylesheet" href="css/iphone-480.css" type='text/css' media='only screen and (max-device-width: 480px)' />
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/jquery.iphone.js"></script>
+	
+    <script type="text/javascript" src="js/other/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="js/other/jquery.disable.text.select.js"></script>
+    <script type="text/javascript" src="js/other/jquery.backgroundPosition.js"></script>	
+    <script type="text/javascript" src="js/other/jquery.dPassword.js"></script>
+	
+    <script type="text/javascript" src="js/ui/ui.iMenu.js"></script>
+    <script type="text/javascript" src="js/ui/ui.iMenuManager.js"></script>
+    <script type="text/javascript" src="js/ui/ui.iTabs.js"></script>
+	
+    <script type="text/javascript" src="js/ui/ui.iInput.js"></script>
+    <script type="text/javascript" src="js/ui/ui.iPassword.js"></script>
+    <script type="text/javascript" src="js/ui/ui.iCheckBox.js"></script>
+    <script type="text/javascript" src="js/ui/ui.iRadioButton.js"></script>
+    <script type="text/javascript" src="js/ui/ui.iSelect.js"></script>
+	
+    <script type="text/javascript" src="js/ui/ui.iGallery.js"></script>
+    <script type="text/javascript" src="js/ui/ui.iScroll.js"></script>
+	
+    <script type="text/javascript">
+    $(document).ready(function(){
+		$('.display').iMenuManager({
+			link   : 'a[href!=#]:not(.external):not(.bigbutton)', // selector for bind goTo event
+			content: '.display',    // what content load from target URL - default is body
+			title  : '.titlebar',  // where widget can found title - default is title
+			back   : '.titlebar'
+			});	
+    });
+    </script>
+</head>
+
+<body>
+    <div class="iphone vertical">
+        <div class="phone">
+    	<div class="display">
+            <div class="screen">
+                <div class="titlebar">
+                    OpenReact Mobile
+                </div>
+                <div class="scroll iscroll">
+	                <ul class="imenu">
+	                    <li>
+	                        <a href="drug.html" title="Drug Lookup" class="arrow">
+	                            Drug Lookup
+	                        </a>
+	                    </li>
+	                </ul>
+	                <ul class="imenu">
+	                    <li>
+	                        <a href="interaction.html" title="Interaction Lookup" class="arrow">
+	                           Interaction Lookup 
+	                        </a>
+	                    </li>
+	                </ul>
+	                <ul class="imenu">
+	                    <li>
+	                        <a href="http://code.google.com/p/freemedforms/" title="Project" class="arrow icon iicon external">
+	                            <em class="ii-inbox"></em>
+	                            Project Homepage
+	                        </a>
+	                    </li>
+	                    <li>
+	                        <a href="http://code.google.com/p/freemedforms/issues/list" title="Project" class="arrow icon iicon external">
+	                            <em class="ii-paperclip"></em>
+	                            Bug reports
+	                        </a>
+	                    </li>
+	                    <li>
+	                        <a href="http://code.google.com/p/freemedforms/source/checkout" title="Source code" class="arrow icon iicon external">
+	                            <em class="ii-gear"></em>
+	                            Source code
+	                        </a>
+	                    </li>
+	                </ul>
+	                <ul class="imenu">
+	                    <li>
+	                        <a href="http://jeff.ourexchange.net" title="/home/jeff/blog" class="arrow icon iicon external">
+	                            <em class="ii-house"></em>
+	                            Author Homepage
+	                        </a>
+	                    </li>
+	                </ul>
+                </div>
+            </div>
+        </div>
+        </div>
+        <a href="http://freemedforms.com/" class="bigbutton">Exit</a>
+    </div>
+
+</body>
+</html>
