@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%-- 
 /***************************************************************************
@@ -27,43 +29,49 @@
  *       NAME <MAIL@ADDRESS>                                               *
  ***************************************************************************/
  --%>
-<%@ page import="com.freemedforms.openreact.web.MobileDetection"%>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>OpenReact Mobile</title>
+<title>OpenReact Mobile: Drug Lookup</title>
 <link rel="stylesheet" href="css/jquery.mobile-1.0a3.min.css" />
 <script src="js/jquery-1.5.min.js"></script>
 <script src="js/jquery.mobile-1.0a3.min.js"></script>
 </head>
 <body>
+
 <div data-role="page" id="startMenu">
 
-	<div data-role="header">
-		<h1>OpenReact</h1>
-	</div><!-- /header -->
+<div data-role="header">
+<h1>OpenReact: Drug Lookup</h1>
+</div>
+<!-- /header -->
 
-	<div data-role="content">	
+<div data-role="content">
 
-		<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b"> 
-			<li data-role="list-divider">Lookup</li> 
-			<li><a href="drugform.jsp">Drugs</a></li> 
-			<li><a href="docs/about/features.html">Interactions</a></li> 
-		</ul> 
+<form action="druglookup.jsp" method="post">
+<fieldset>
+<div data-role="fieldcontain"><label for="codeset" class="select">Code
+Set:</label> <select name="codeset" id="codeset">
+	<option value="EN_US">EN_US</option>
+	<option value="EN_CA">EN_CA</option>
+	<option value="EN_ZA">EN_ZA</option>
+	<option value="FR_FR">FR_FR</option>
+</select></div>
 
-		<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b"> 
-			<li data-role="list-divider">Project</li> 
-			<li><a href="http://freemedforms.com">FreeMedForms Project</a></li> 
-			<li><a href="http://code.google.com/p/freemedforms">Google Code</a></li> 
-			<li><a href="http://jeff.ourexchange.net">Developer Homepage</a></li> 
-		</ul> 
+<div data-role="fieldcontain"><label for="drugname">Drug
+Input:</label> <input type="text" name="drugname" id="drugname" value="" /></div>
+<button type="submit" data-theme="a" name="submit" value="Submit">Submit</button>
+</fieldset>
+</form>
 
-	</div><!-- /content -->
+</div>
+<!-- /content -->
 
-	<div data-role="footer">
-		<h4>&copy; 2011</h4>
-	</div><!-- /footer -->
-</div><!-- /page -->
+<div data-role="footer">
+<h4>&copy; 2011</h4>
+</div>
+<!-- /footer --></div>
+<!-- /page -->
 
 </body>
 </html>
