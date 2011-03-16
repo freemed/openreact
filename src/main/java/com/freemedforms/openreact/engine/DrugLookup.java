@@ -53,8 +53,9 @@ public class DrugLookup {
 			+ " GROUP BY D.NAME " + " LIMIT " + LOOKUP_LIMIT;
 
 	public static String Q_DRUG_BY_ID = "SELECT "
-			+ " D.NAME AS NAME, D.DID AS CODE " + " FROM DRUGS D "
-			+ " WHERE D.DID = ?";
+			+ " D.NAME AS NAME, D.DID AS CODE, S.LANG AS CS "
+			+ " FROM DRUGS D " + " LEFT OUTER JOIN SOURCES S ON S.SID = D.SID "
+			+ " WHERE D.DID = ? LIMIT 1";
 
 	public static List<Drug> findDrug(CodeSet codeset, String name) {
 		List<Drug> result = new ArrayList<Drug>();
@@ -134,6 +135,7 @@ public class DrugLookup {
 			result.setDrugId(drugId);
 			result.setDrugName(rs.getString("NAME"));
 			result.setDrugCode(rs.getString("CODE"));
+			result.setCodeSet(CodeSet.valueOf(rs.getString("CS")));
 		} catch (SQLException e) {
 			log.error(e);
 			DbUtil.closeSafely(rs);

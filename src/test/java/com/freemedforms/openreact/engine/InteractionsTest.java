@@ -50,7 +50,8 @@ public class InteractionsTest extends TestCase {
 	}
 
 	@Before
-	public void setup() throws Exception {
+	@Override
+	public void setUp() throws Exception {
 		BasicConfigurator.configure();
 		Configuration.loadConfiguration(InteractionsTest.class.getResource(
 				"/openreact.properties").toString(), null);
@@ -59,7 +60,6 @@ public class InteractionsTest extends TestCase {
 
 	@Test
 	public void testDrugLookupByName() throws Exception {
-		setup();
 		List<Drug> foundDrugs = DrugLookup.findDrug(CodeSet.EN_US, "WARFARIN");
 		assertNotNull("DrugLookup.findDrug NOT NULL", foundDrugs);
 		boolean found = false;
@@ -75,7 +75,9 @@ public class InteractionsTest extends TestCase {
 	@Test
 	public void testDrugLookupById() {
 		Long drugId = 62039L;
-		// Drug[] foundDrugs = DrugLookup.findDrug(CodeSet.EN_US, "WARFARIN");
+		Drug testDrug = DrugLookup.getDrugById(drugId);
+		assertEquals("EN_US", testDrug.getCodeSet());
+		assertEquals("WARFARIN SODIUM", testDrug.getDrugName());
 	}
 
 }
