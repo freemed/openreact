@@ -88,6 +88,7 @@ public class DrugLookup {
 				Drug drug = new Drug();
 				drug.setDrugName(rs.getString("NAME"));
 				drug.setDrugCode(rs.getString("CODE"));
+				drug.setDrugId(Long.parseLong(rs.getString("CODE")));
 				drug.setCodeSet(codeset);
 				result.add(drug);
 			}
@@ -135,7 +136,7 @@ public class DrugLookup {
 			result.setDrugId(drugId);
 			result.setDrugName(rs.getString("NAME"));
 			result.setDrugCode(rs.getString("CODE"));
-			result.setCodeSet(CodeSet.valueOf(rs.getString("CS")));
+			result.setCodeSet(CodeSet.valueOf(rs.getString("CS").toUpperCase()));
 		} catch (SQLException e) {
 			log.error(e);
 			DbUtil.closeSafely(rs);

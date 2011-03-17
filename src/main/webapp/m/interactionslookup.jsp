@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%-- 
 /***************************************************************************
@@ -27,43 +29,71 @@
  *       NAME <MAIL@ADDRESS>                                               *
  ***************************************************************************/
  --%>
-<%@ page import="com.freemedforms.openreact.web.MobileDetection"%>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<%@ page import="com.freemedforms.openreact.engine.DrugLookup"%>
+<%@ page import="com.freemedforms.openreact.engine.InteractionLookup"%>
+<%@ page import="com.freemedforms.openreact.types.CodeSet"%>
+<%@ page import="com.freemedforms.openreact.types.Drug"%>
+<%@ page import="com.freemedforms.openreact.types.DrugInteraction"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.List"%>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>OpenReact Mobile</title>
+<title>OpenReact Mobile: Drug Lookup</title>
 <link rel="stylesheet" href="css/jquery.mobile-1.0a3.min.css" />
 <script src="js/jquery-1.5.min.js"></script>
 <script src="js/jquery.mobile-1.0a3.min.js"></script>
 </head>
 <body>
+
 <div data-role="page" id="startMenu">
 
-	<div data-role="header">
-		<h1>OpenReact</h1>
-	</div><!-- /header -->
+<div data-role="header">
+<h1>OpenReact: Drug Lookup</h1>
+</div>
+<!-- /header -->
 
-	<div data-role="content">	
+<div data-role="content">
 
-		<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b"> 
-			<li data-role="list-divider">Lookup</li> 
-			<li><a href="drugform.jsp">Drugs</a></li> 
-			<li><a href="interactions.jsp">Interactions</a></li> 
-		</ul> 
+<%
 
-		<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b"> 
-			<li data-role="list-divider">Project</li> 
-			<li><a href="http://freemedforms.com">FreeMedForms Project</a></li> 
-			<li><a href="http://code.google.com/p/freemedforms">Google Code</a></li> 
-			<li><a href="http://jeff.ourexchange.net">Developer Homepage</a></li> 
-		</ul> 
+String rawDrugIds = null;
+List<Long> drugIds = new ArrayList<Long>(); 
+try {
+	rawDrugIds = request.getParameter("drugs");
+	String[] drugIdStrings = rawDrugIds.split(",");
+	for (String drugIdString : drugIdStrings) {
+		if (drugIdString != null && !drugIdString.equals("")) {
+			drugIds.add(Long.parseLong(drugIdString));
+		}
+	}
+} catch (Exception ex) {
+	// no drugs, ignore
+}
 
-	</div><!-- /content -->
+Drug drug = DrugLookup.getDrugById(drugIds.get(0));
 
-	<div data-role="footer">
-		<h4>&copy; 2011</h4>
-	</div><!-- /footer -->
-</div><!-- /page -->
+List<DrugInteraction> interactions = InteractionLookup.findInteractionsFromDrugs(drug.getCodeSet(), drugIds);
+if (interactions != null && interactions.size() > 0) {
+	out.println("<ul data-role=\"listview\" data-inset=\"true\" data-theme=\"c\" data-dividertheme=\"b\">");
+	out.println("<li data-role=\"list-divider\">Interactions</li>");
+	for (DrugInteraction interaction : interactions) {
+		out.println("<li>" + interaction.getLevel() + "</li>");
+	}
+} else {
+	out.println("<div>No interactions found.</div>");
+}
+
+%>
+
+</div>
+<!-- /content -->
+
+<div data-role="footer">
+<h4>&copy; 2011</h4>
+</div>
+<!-- /footer --></div>
+<!-- /page -->
 
 </body>
 </html>
