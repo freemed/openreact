@@ -1,4 +1,3 @@
-1|AFSSAPS_FR|67|fr_FR|http://www.afssaps.fr/|Public domain|2011-01-16|0.6.0|Eric Maeker, MD (Fr)|0.6.0|AFSSAPS|http://afssaps-prd.afssaps.fr/php/ecodex/index.php|CIS|1|1||CIP|43|||0.6.0|0.1.0
-2|CA_HCDPD|22651|||||||||||true|true|||70||||
-3|FDA_US|22652|en_US|http://www.fda.gov/|Public domain|2011-01-16|0.6.0|Eric Maeker, MD (Fr)|0.6.0|FDA|http://www.fda.gov/Drugs/|DRUG_CODE|1|1||PACKAGE|59||NAME (FORM, GLOBAL_STRENGTH)|0.6.0|0.1.0
-4|SAEPI_ZA|49852|fr_FR|http://home.intekom.com/pharm/|Public domain|2011-01-16|0.6.0|Eric Maeker, MD (Fr)|0.6.0|SAEPI : South African Electronic Package Inserts|http://home.intekom.com/pharm/|FakeUid|1|1||FakePUid|57|||0.6.0|0.1.0
+1|FR_AFSSAPS|10967|fr_FR|http://www.afssaps.fr/|Public domain|2011-03-12|0.6.0|Eric Maeker, MD (Fr)|0.6.0|AFSSAPS|http://afssaps-prd.afssaps.fr/php/ecodex/index.php|CIS|1|1||CIP|60|||0.6.0|0.1.0
+2|CA_HCDPD|56618|||||||||||true|true|||69||||
+3|FDA_US|69582|en_US|http://www.fda.gov/|Public domain|2011-03-13|0.6.0|Eric Maeker, MD (Fr)|0.6.0|FDA|http://www.fda.gov/Drugs/|DRUG_CODE|1|1||PACKAGE|60||NAME (FORM, GLOBAL_STRENGTH)|0.6.0|0.1.0
