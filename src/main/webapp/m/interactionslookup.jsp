@@ -78,7 +78,14 @@ if (interactions != null && interactions.size() > 0) {
 	out.println("<ul data-role=\"listview\" data-inset=\"true\" data-theme=\"c\" data-dividertheme=\"b\">");
 	out.println("<li data-role=\"list-divider\">Interactions</li>");
 	for (DrugInteraction interaction : interactions) {
-		out.println("<li>" + interaction.getLevel() + "</li>");
+		out.println("<li><b>");
+		out.println(interaction.getDrug1().getDrugName());
+		if (interaction.getDrug1().getDrugCode() != interaction.getDrug2().getDrugCode()) {
+			out.println(" + " + interaction.getDrug2().getDrugName());
+		}
+		out.println("</b> (" + interaction.getLevel() + ")<br/>");
+		out.println("<i>" + interaction.getRisk() + "</i>");
+		out.println("</li>");
 	}
 } else {
 	out.println("<div>No interactions found.</div>");

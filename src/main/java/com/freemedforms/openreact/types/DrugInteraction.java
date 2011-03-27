@@ -111,8 +111,9 @@ public class DrugInteraction implements Serializable {
 		return new StringBuilder().append("DrugInteraction{").append("id=")
 				.append(id).append(",drug1=").append(drug1).append(",drug2=")
 				.append(drug2).append(",atc1=").append(atc1).append(",atc2=")
-				.append(atc2).append(",level=").append(level).append(
-						",webLink=").append(webLink).append("}").toString();
+				.append(atc2).append(",risk=").append(risk).append(",level=")
+				.append(level).append(",webLink=").append(webLink).append("}")
+				.toString();
 	}
 
 }

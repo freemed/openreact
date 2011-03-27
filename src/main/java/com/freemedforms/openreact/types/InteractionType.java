@@ -27,6 +27,8 @@
 
 package com.freemedforms.openreact.types;
 
+import java.util.EnumSet;
+
 public enum InteractionType {
 
 	T("T"), P("P"), C("C"), D("D"), TD("TD"), PC("PC"), PD("PD"), TC("TC"), TDC(
@@ -45,6 +47,17 @@ public enum InteractionType {
 	@Override
 	public String toString() {
 		return this.value;
+	}
+
+	public static InteractionType getByValue(String value) {
+		InteractionType returnValue = null;
+		for (final InteractionType element : EnumSet
+				.allOf(InteractionType.class)) {
+			if (element.getValue().equals(value)) {
+				returnValue = element;
+			}
+		}
+		return returnValue;
 	}
 
 }
