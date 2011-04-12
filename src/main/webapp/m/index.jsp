@@ -54,7 +54,7 @@
 		<ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="b"> 
 			<li data-role="list-divider">Project</li> 
 			<li><a href="http://freemedforms.com">FreeMedForms Project</a></li> 
-			<li><a href="http://code.google.com/p/freemedforms">Google Code</a></li> 
+			<li><a href="http://code.google.com/p/freemedforms/wiki/OpenReact">OpenReact Page</a></li> 
 			<li><a href="http://jeff.ourexchange.net">Developer Homepage</a></li> 
 		</ul> 
 
