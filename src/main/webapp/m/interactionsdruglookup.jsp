@@ -38,9 +38,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>OpenReact Mobile: Interactions Drug Lookup</title>
-<link rel="stylesheet" href="css/jquery.mobile-1.0a3.min.css" />
-<script src="js/jquery-1.5.min.js"></script>
-<script src="js/jquery.mobile-1.0a3.min.js"></script>
+<link rel="stylesheet" href="css/jquery.mobile-1.0a4.1.min.css" />
+<script src="js/jquery-1.5.2.min.js"></script>
+<script src="js/jquery.mobile-1.0a4.1.min.js"></script>
 </head>
 <body>
 
