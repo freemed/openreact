@@ -1,3 +1,4 @@
-1|FR_AFSSAPS|10967|fr_FR|http://www.afssaps.fr/|Public domain|2011-03-12|0.6.0|Eric Maeker, MD (Fr)|0.6.0|AFSSAPS|http://afssaps-prd.afssaps.fr/php/ecodex/index.php|CIS|1|1||CIP|60|||0.6.0|0.1.0
-2|CA_HCDPD|56618|||||||||||true|true|||69||||
-3|FDA_US|69582|en_US|http://www.fda.gov/|Public domain|2011-03-13|0.6.0|Eric Maeker, MD (Fr)|0.6.0|FDA|http://www.fda.gov/Drugs/|DRUG_CODE|1|1||PACKAGE|60||NAME (FORM, GLOBAL_STRENGTH)|0.6.0|0.1.0
+1|FR_AFSSAPS|10967|fr_FR|http://www.afssaps.fr/|Public domain|2011-04-21|0.6.0|Eric Maeker, MD (Fr)|0.6.0|AFSSAPS|http://afssaps-prd.afssaps.fr/php/ecodex/index.php|CIS|1|1||CIP|60|||0.6.0|0.1.0
+2|FDA_US|56890|en_US|http://www.fda.gov/|Public domain|2011-04-21|0.6.0|Eric Maeker, MD (Fr)|0.6.0|FDA|http://www.fda.gov/Drugs/|DRUG_CODE|1|1||PACKAGE|59||NAME (FORM, GLOBAL_STRENGTH)|0.6.0|0.1.0
+3|CA_HCDPD|112007|||||||||||true|true|||69||||
+4|FAGG_AFMPS_BE|125032|fr_FR|http://www.fagg-afmps.be/|Public domain|2011-04-21|0.6.0|Eric Maeker, MD (Fr)|0.6.0|AFMPS : Agence Fédérale des Médicaments et des Produits de Santé|http://www.fagg-afmps.be/fr/items-HOME/Bases_de_donnees/index.jsp|CIS|1|1||CIP|63||NAME (FORM, GLOBAL_STRENGTH)|0.6.0|0.1.0
