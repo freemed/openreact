@@ -1,14 +1,14 @@
-1|0.3.0|2010-03-01|Translated all fields
-2|0.4.0|2010-03-15|DRUGS table : Adding GLOBAL_STRENGTH
-3|0.4.0|2010-06-01|Adding the information table
-4|0.4.4|2010-07-16|Adding LK_MOL_ATC table
-5|0.4.4|2010-07-18|INFORMATIONS table : Adding the COMPLEMENTARY_WEBSITE
-6|0.4.4|2010-07-22|COMPOSITION table : Adding ATC Molecule code
-7|0.4.4|2010-07-22|Adding DB_SCHEMA_VERSION table
-8|0.5.0|2010-09-22|Replacing UID from int to varchar
-9|0.5.0|2010-09-23|Adding molecule links completion percent to INFORMATION table
-10|0.5.2|2010-09-23|Adding routes tables and link table
-11|0.5.5|2011-01-10|Totally redefined schema
+1|0.3.0|2010-03-01|Drugs: Translated all fields
+2|0.4.0|2010-03-15|Drugs: DRUGS table : Adding GLOBAL_STRENGTH
+3|0.4.0|2010-06-01|Drugs: Adding the information table
+4|0.4.4|2010-07-16|Drugs: Adding LK_MOL_ATC table
+5|0.4.4|2010-07-18|Drugs: INFORMATIONS table : Adding the COMPLEMENTARY_WEBSITE
+6|0.4.4|2010-07-22|Drugs: COMPOSITION table : Adding ATC Molecule code
+7|0.4.4|2010-07-22|Drugs: Adding DB_SCHEMA_VERSION table
+8|0.5.0|2010-09-22|Drugs: Replacing UID from int to varchar
+9|0.5.0|2010-09-23|Drugs: Adding molecule links completion percent to INFORMATION table
+10|0.5.2|2010-09-23|Drugs: Adding routes tables and link table
+11|0.5.5|2011-01-10|Drugs: Totally redefined schema
 12|0.0.8|2009-01-01|Interactions: First version of the database
 13|0.3.0|2010-03-02|Interactions: First SVN publication
 14|0.4.4|2010-07-02|Interactions: Adding the ATC table
@@ -21,3 +21,5 @@
 21|0.5.2|2010-14-10|Interactions: Addind SOURCES_LINK to IAM_TREE
 22|0.5.2|2010-14-10|Interactions: Addind SOURCES table
 23|0.5.5|2011-01-10|Interactions: Totally redefined schema
+24|0.6.0|2011-04-21|Interactions: Adding duplication warnings for all ATC including interacting classes
+25|0.6.0|2011-04-22|Interactions: Starting implementation of DDI formalized risks
