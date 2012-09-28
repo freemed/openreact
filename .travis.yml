@@ -4,6 +4,7 @@ jdk:
 before_install:
   - sudo apt-get install -y sqlite3 mysql-server mysql-client p7zip-full
   - ( cd db ; make )
-  - mysqladmin create openreact
-  - mysql -uroot -Be 'GRANT ALL ON openreact.* TO openreact@localhost IDENTIFIED BY "openreact"; FLUSH PRIVILEGES;'
+  - mysqladmin -uroot create openreact
+  - mysql -uroot -Be 'GRANT ALL ON openreact.* TO openreact@localhost IDENTIFIED BY "openreact";'
+  - mysqladmin -uroot flush-privileges
   - mysql -uroot openreact -Be "SOURCE db/schema/000-schema.sql"
