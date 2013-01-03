@@ -26,6 +26,6 @@ master.db:
 schema: master.db
 	@echo -n "Generating schema ... "
 	@mkdir -p schema
-	@echo ".schema" | sqlite3 master.db > schema/000-schema.sql
+	@echo ".dump" | sqlite3 master.db | ./sqlite3-to-mysql.py > schema/000-schema.sql
 	@echo "[done]"
 
